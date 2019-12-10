@@ -1,0 +1,11 @@
+#@data/values
+---
+namespace: default
+svc_port: 80
+app_port: 80
+uaa_msg: stranger
+db:
+  url:
+  username:
+  password:
+clients: []

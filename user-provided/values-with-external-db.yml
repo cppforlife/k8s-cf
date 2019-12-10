@@ -1,0 +1,15 @@
+#@data/values
+---
+uaa:
+  db:
+    url: mysql://some-db
+    username: uaa-db-username
+    password: uaa-db-password
+cc:
+  db:
+    url: mysql://some-db
+    username: cc-db-username
+    password: cc-db-password
+  uaa_client_secret: cc-uaa-secret
+db:
+  enabled: false

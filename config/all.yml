@@ -1,0 +1,65 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:template", "template")
+#@ load("@ytt:library", "library")
+#@ load("@ytt:assert", "assert")
+
+#@ cc_db_user = data.values.cc.db.username or "cc-db"
+#@ uaa_db_user = data.values.uaa.db.username or "uaa-db"
+#@ cc_db_password = data.values.cc.db.password or assert.fail("missing cc password")
+#@ uaa_db_password = data.values.uaa.db.password or assert.fail("missing uaa password")
+
+#! -- DB --
+
+#@ def additional_db_values():
+databases:
+#@overlay/match by="name",missing_ok=True
+- name: cc
+  username: #@ cc_db_user
+  password: #@ cc_db_password
+#@overlay/match by="name",missing_ok=True
+- name: uaa
+  username: #@ uaa_db_user
+  password: #@ uaa_db_password
+#@ end
+
+#@ if data.values.db.enabled:
+#@   db = library.get("db/config").with_data_values(additional_db_values())
+#@   db_url_func = db.export("url")
+#@ end
+
+#@ cc_db_url = data.values.cc.db.url or db_url_func()
+#@ uaa_db_url = data.values.uaa.db.url or db_url_func()
+
+#! -- UAA --
+
+#@ def additional_uaa_values():
+clients:
+#@overlay/match by="name",missing_ok=True
+- name: cc
+  secret: #@ data.values.cc.uaa_client_secret or assert.fail("missing uaa_client_secret")
+db:
+  url: #@ uaa_db_url
+  username: #@ uaa_db_user
+  password: #@ uaa_db_password
+#@ end
+
+#@ uaa = library.get("uaa/config").with_data_values(additional_uaa_values())
+#@ uaa_url_func = uaa.export("url")
+
+#! -- CC --
+
+#@ def additional_cc_values():
+uaa_url: #@ uaa_url_func()
+db:
+  url: #@ cc_db_url
+  username: #@ cc_db_user
+  password: #@ cc_db_password
+#@ end
+
+#@ cc = library.get("cc/config").with_data_values(additional_cc_values())
+
+--- #@ template.replace(cc.result())
+--- #@ template.replace(uaa.result())
+
+#@ if/end data.values.db.enabled:
+--- #@ template.replace(db.result())

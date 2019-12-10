@@ -1,0 +1,15 @@
+#@data/values
+---
+uaa:
+  db:
+    url:
+    username:
+    password:
+cc:
+  db:
+    url:
+    username:
+    password:
+  uaa_client_secret:
+db:
+  enabled: true

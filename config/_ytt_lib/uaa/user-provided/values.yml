@@ -1,0 +1,6 @@
+#@data/values
+---
+db:
+  url: db-url
+  username: db-username
+  password: db-password

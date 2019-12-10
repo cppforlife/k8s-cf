@@ -1,0 +1,72 @@
+#@ load("@ytt:yaml", "yaml")
+#@ load("@ytt:data", "data")
+#@ load("misc.star", "value")
+
+#@ def _labels():
+uaa: ""
+#@ end
+
+#@ def _config_file():
+---
+port: #@ data.values.app_port
+passwordResetPolicy: something
+private_key: something
+public_key: something
+clients:
+  #@ for/end client in data.values.clients:
+  #@yaml/text-templated-strings
+  (@= client.name @):
+    secret: #@ client.secret
+db:
+  url: #@ value("db", "url")
+  username: #@ value("db", "username")
+  password: #@ value("db", "password")
+#@ end
+
+#@ ns = value("namespace")
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: #@ ns
+  name: uaa
+spec:
+  ports:
+  - port: #@ data.values.svc_port
+    targetPort: #@ data.values.app_port
+  selector: #@ _labels()
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: #@ ns
+  name: uaa
+spec:
+  selector:
+    matchLabels: #@ _labels()
+  template:
+    metadata:
+      labels: #@ _labels()
+    spec:
+      containers:
+      - name: uaa
+        image: uaa-img
+        env:
+        - name: HELLO_MSG
+          value: #@ value("uaa_msg")
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+      volumes:
+      - name: config
+        configMapRef:
+          name: uaa-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uaa-config
+  namespace: #@ ns
+data:
+  config.yml: #@ yaml.encode(_config_file())

@@ -1,0 +1,21 @@
+#@ load("@ytt:yaml", "yaml")
+#@ load("@ytt:data", "data")
+#@ load("misc.star", "value")
+
+#@ def _config_file():
+---
+databases:
+#@ for/end db in data.values.databases:
+- name: #@ value("name", values=db)
+  username: #@ value("username", values=db)
+  password: #@ value("password", values=db)
+#@ end
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database
+  namespace: #@ value("namespace")
+data:
+  config.yml: #@ yaml.encode(_config_file())

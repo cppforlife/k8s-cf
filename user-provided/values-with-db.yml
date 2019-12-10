@@ -1,0 +1,11 @@
+#@data/values
+---
+uaa:
+  db:
+    username: uaa-db-username
+    password: uaa-db-password
+cc:
+  db:
+    username: cc-db-username
+    password: cc-db-password
+  uaa_client_secret: cc-uaa-secret

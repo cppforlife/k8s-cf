@@ -1,0 +1,7 @@
+---
+apiVersion: kbld.k14s.io/v1alpha1
+kind: ImageOverrides
+overrides:
+- image: cc-img
+  newImage: kbld:cc-img-sha256-d78bc7163d3d8bdc8420de7b6c9ca3e28f848240fbabf277ce51fe3105d6b10b
+  preresolved: true

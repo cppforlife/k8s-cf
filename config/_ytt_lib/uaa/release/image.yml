@@ -1,0 +1,7 @@
+---
+apiVersion: kbld.k14s.io/v1alpha1
+kind: ImageOverrides
+overrides:
+- image: uaa-img
+  newImage: kbld:uaa-img-sha256-6227ebf0aeb8108c10309fb74ec618402c48d5d78632462331917858795a33f2
+  preresolved: true

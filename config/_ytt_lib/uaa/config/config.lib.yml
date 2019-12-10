@@ -1,0 +1,5 @@
+#@ load("@ytt:data", "data")
+
+#@ def url(): return "uaa."+_ns()+".svc.cluster.local"
+
+#@ def _ns(): return data.values.namespace

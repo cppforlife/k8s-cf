@@ -1,0 +1,65 @@
+#@ load("@ytt:yaml", "yaml")
+#@ load("@ytt:data", "data")
+#@ load("misc.star", "value")
+
+#@ def _labels():
+cc: ""
+#@ end
+
+#@ def _config_file():
+---
+uaa:
+  url: #@ value("uaa_url")
+db:
+  url: #@ value("db", "url")
+  username: #@ value("db", "username")
+  password: #@ value("db", "password")
+#@ end
+
+#@ ns = value("namespace")
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: #@ ns
+  name: cc
+spec:
+  ports:
+  - port: #@ data.values.svc_port
+    targetPort: #@ data.values.app_port
+  selector: #@ _labels()
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: #@ ns
+  name: cc
+spec:
+  selector:
+    matchLabels: #@ _labels()
+  template:
+    metadata:
+      labels: #@ _labels()
+    spec:
+      containers:
+      - name: cc
+        image: cc-img
+        env:
+        - name: HELLO_MSG
+          value: #@ value("cc_msg")
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+      volumes:
+      - name: config
+        configMapRef:
+          name: cc-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cc-config
+  namespace: #@ ns
+data:
+  config.yml: #@ yaml.encode(_config_file())

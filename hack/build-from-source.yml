@@ -1,0 +1,15 @@
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind":"Sources","sources":[{"image":"cc-img"}]})
+---
+sources:
+#@overlay/match by="image"
+- image: cc-img
+  path: _ytt_lib/cc
+
+#@overlay/match by=overlay.subset({"kind":"Sources","sources":[{"image":"uaa-img"}]})
+---
+sources:
+#@overlay/match by="image"
+- image: uaa-img
+  path: _ytt_lib/uaa
