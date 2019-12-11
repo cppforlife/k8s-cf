@@ -13,6 +13,15 @@ git checkout ytt-library
 ./ytt version
 ```
 
+or prebuilt
+
+```
+https://dk-shared-assets.s3.amazonaws.com/ytt-darwin-amd64
+https://dk-shared-assets.s3.amazonaws.com/ytt-linux-amd64
+```
+
+`ytt version` should return 0.22.0-lib
+
 ```
 $ ./ytt -f config/ -f user-provided/values-with-db.yml
 $ ./ytt -f config/ -f user-provided/values-with-exterbal-db.yml
