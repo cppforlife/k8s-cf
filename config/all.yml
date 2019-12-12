@@ -58,8 +58,8 @@ db:
 
 #@ cc = library.get("cc/config").with_data_values(additional_cc_values())
 
---- #@ template.replace(cc.result())
---- #@ template.replace(uaa.result())
+--- #@ template.replace(cc.eval())
+--- #@ template.replace(uaa.eval())
 
 #@ if/end data.values.db.enabled:
---- #@ template.replace(db.result())
+--- #@ template.replace(db.eval())
