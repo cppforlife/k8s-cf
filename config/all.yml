@@ -10,7 +10,7 @@
 
 #! -- DB --
 
-#@ def additional_db_values():
+#@ def db_values():
 databases:
 #@overlay/match by="name",missing_ok=True
 - name: cc
@@ -23,7 +23,7 @@ databases:
 #@ end
 
 #@ if data.values.db.enabled:
-#@   db = library.get("db/config").with_data_values(additional_db_values())
+#@   db = library.get("db/config").with_data_values(db_values())
 #@   db_url_func = db.export("url")
 #@ end
 
@@ -32,7 +32,7 @@ databases:
 
 #! -- UAA --
 
-#@ def additional_uaa_values():
+#@ def uaa_values():
 clients:
 #@overlay/match by="name",missing_ok=True
 - name: cc
@@ -43,12 +43,12 @@ db:
   password: #@ uaa_db_password
 #@ end
 
-#@ uaa = library.get("uaa/config").with_data_values(additional_uaa_values())
+#@ uaa = library.get("uaa/config").with_data_values(uaa_values())
 #@ uaa_url_func = uaa.export("url")
 
 #! -- CC --
 
-#@ def additional_cc_values():
+#@ def cc_values():
 uaa_url: #@ uaa_url_func()
 db:
   url: #@ cc_db_url
@@ -56,7 +56,7 @@ db:
   password: #@ cc_db_password
 #@ end
 
-#@ cc = library.get("cc/config").with_data_values(additional_cc_values())
+#@ cc = library.get("cc/config").with_data_values(cc_values())
 
 --- #@ template.replace(cc.eval())
 --- #@ template.replace(uaa.eval())
