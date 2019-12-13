@@ -22,7 +22,7 @@ databases:
 #@ end
 
 #@ if data.values.db.enabled:
-#@   db = library.get("db/config").with_data_values(db_values())
+#@   db = library.get("github.com/cloudfoundry/db/config").with_data_values(db_values())
 #@   db_url = db.export("url")()
 #@ end
 
@@ -38,7 +38,7 @@ db:
   password: #@ data.values.uaa.db.password
 #@ end
 
-#@ uaa = library.get("uaa/config").with_data_values(uaa_values())
+#@ uaa = library.get("github.com/cloudfoundry/uaa/config").with_data_values(uaa_values())
 #@ uaa_url = uaa.export("url")()
 
 #! -- CC --
@@ -53,11 +53,11 @@ db:
   password: #@ data.values.cc.db.password
 #@ end
 
-#@ cc = library.get("cc/config").with_data_values(cc_values())
+#@ cc = library.get("github.com/cloudfoundry/cc/config").with_data_values(cc_values())
 
 #! -- Networking --
 
-#@ def networking_values():
+#@ def net_values():
 cfroutesync:
   ccCA: "..." #! TODO
   ccBaseURL: #@ "https://" + cc.export("url")()
@@ -70,8 +70,7 @@ cfroutesync:
 #! include entire networking directory instead of just install/ytt/networking
 #! because there is cfroutesync crd that leaves outside of that structure
 
-#@ net_lib = "github.com/cloudfoundry/cf-k8s-networking"
-#@ net = library.get(net_lib).with_data_values(networking_values())
+#@ net = library.get("github.com/cloudfoundry/cf-k8s-networking").with_data_values(net_values())
 
 #! -- UAA additional config --
 
