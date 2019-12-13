@@ -68,7 +68,7 @@ clients:
 - name: #@ cc.export("uaa_client")()
   secret: #@ data.values.cc.uaa_client_secret
 #@overlay/append
-- name: networking
+- name: #@ data.values.networking.uaa_client
   secret: #@ data.values.networking.uaa_client_secret
 #@ end
 

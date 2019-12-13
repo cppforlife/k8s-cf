@@ -9,7 +9,7 @@ cfroutesync:
   ccBaseURL: #@ "https://" + cc_url
   uaaCA: "..." #! TODO
   uaaBaseURL: #@ "https://" + uaa_url
-  clientName: networking
+  clientName: #@ data.values.networking.uaa_client
   clientSecret: #@ data.values.networking.uaa_client_secret
 #@ end
 
