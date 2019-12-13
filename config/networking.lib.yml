@@ -5,9 +5,9 @@
 
 #@ def net_values():
 cfroutesync:
-  ccCA: "..." #! TODO
+  ccCA: "" #! TODO
   ccBaseURL: #@ "https://" + cc_url
-  uaaCA: "..." #! TODO
+  uaaCA: "" #! TODO
   uaaBaseURL: #@ "https://" + uaa_url
   clientName: #@ data.values.networking.uaa_client
   clientSecret: #@ data.values.networking.uaa_client_secret

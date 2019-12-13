@@ -80,3 +80,14 @@ clients:
 
 #@ if/end data.values.db.enabled:
 --- #@ template.replace(db.eval())
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cf-system
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cf-workloads
