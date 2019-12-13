@@ -3,6 +3,7 @@
 #@ load("@ytt:library", "library")
 #@ load("@ytt:assert", "assert")
 #@ load("validations.star", "value")
+#@ load("networking.lib.yml", "networking")
 
 #! -- DB --
 
@@ -11,11 +12,11 @@
 
 #@ def db_values():
 databases:
-#@overlay/match by="name",missing_ok=True
+#@overlay/append
 - name: cc
   username: #@ cc_db_user
   password: #@ data.values.cc.db.password
-#@overlay/match by="name",missing_ok=True
+#@overlay/append
 - name: uaa
   username: #@ uaa_db_user
   password: #@ data.values.uaa.db.password
@@ -57,36 +58,21 @@ db:
 
 #! -- Networking --
 
-#@ def net_values():
-cfroutesync:
-  ccCA: "..." #! TODO
-  ccBaseURL: #@ "https://" + cc.export("url")()
-  uaaCA: "..." #! TODO
-  uaaBaseURL: #@ "https://" + uaa_url
-  clientName: networking
-  clientSecret: #@ data.values.networking.uaa_client_secret
-#@ end
-
-#! include entire networking directory instead of just install/ytt/networking
-#! because there is cfroutesync crd that leaves outside of that structure
-
-#@ net = library.get("github.com/cloudfoundry/cf-k8s-networking").with_data_values(net_values())
+#@ net = networking(cc_url=cc.export("url")(), uaa_url=uaa_url)
 
 #! -- UAA additional config --
 
 #@ def uaa_clients_values():
 clients:
-#@overlay/match by="name",missing_ok=True
+#@overlay/append
 - name: #@ cc.export("uaa_client")()
   secret: #@ data.values.cc.uaa_client_secret
-#@overlay/match by="name",missing_ok=True
+#@overlay/append
 - name: networking
   secret: #@ data.values.networking.uaa_client_secret
 #@ end
 
 #@ uaa = uaa.with_data_values(uaa_clients_values())
-
-#! -- output --
 
 --- #@ template.replace(cc.eval())
 --- #@ template.replace(uaa.eval())

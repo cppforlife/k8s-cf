@@ -1,0 +1,21 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:library", "library")
+
+#@ def networking(cc_url=None, uaa_url=None):
+
+#@ def net_values():
+cfroutesync:
+  ccCA: "..." #! TODO
+  ccBaseURL: #@ "https://" + cc_url
+  uaaCA: "..." #! TODO
+  uaaBaseURL: #@ "https://" + uaa_url
+  clientName: networking
+  clientSecret: #@ data.values.networking.uaa_client_secret
+#@ end
+
+#! include entire networking directory instead of just install/ytt/networking
+#! because there is cfroutesync crd that leaves outside of that structure
+#@ net = library.get("github.com/cloudfoundry/cf-k8s-networking")
+#@ return net.with_data_values(net_values())
+
+#@ end
