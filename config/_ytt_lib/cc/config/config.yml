@@ -9,7 +9,9 @@ cc: ""
 #@ def _config_file():
 ---
 uaa:
-  url: #@ value("uaa_url")
+  url: #@ value("uaa", "url")
+  client: #@ value("uaa", "client")
+  client_secret: #@ value("uaa", "client_secret")
 db:
   url: #@ value("db", "url")
   username: #@ value("db", "username")

@@ -9,3 +9,5 @@ cc:
     username: cc-db-username
     password: cc-db-password
   uaa_client_secret: cc-uaa-secret
+networking:
+  uaa_client_secret: networking-uaa-secret

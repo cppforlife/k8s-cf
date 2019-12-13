@@ -1,0 +1,6 @@
+#@ load("@ytt:template", "template")
+#@ load("@ytt:library", "library")
+
+#@ mc = library.get("github.com/GoogleCloudPlatform/metacontroller")
+
+--- #@ template.replace(mc.eval())

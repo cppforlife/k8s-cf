@@ -11,5 +11,7 @@ cc:
     username:
     password:
   uaa_client_secret:
+networking:
+  uaa_client_secret:
 db:
   enabled: true
