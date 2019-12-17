@@ -1,0 +1,17 @@
+apiVersion: vendir.k14s.io/v1alpha1
+directories:
+- contents:
+  - git:
+      commitTitle: 'feat: add /metrics prometheus scrapable endpoint...'
+      sha: 2b009b61fa8afb330a4302c694ee61b11104c54c
+    path: github.com/cloudfoundry/cf-k8s-networking
+  - manual: {}
+    path: github.com/cloudfoundry/cc
+  - manual: {}
+    path: github.com/cloudfoundry/uaa
+  - manual: {}
+    path: github.com/cloudfoundry/db
+  - manual: {}
+    path: github.com/GoogleCloudPlatform/metacontroller
+  path: config/_ytt_lib
+kind: LockConfig
